@@ -1,24 +1,38 @@
 import { useState } from "react";
-import Modal from "react-modal";
+import ModalDelete from "../ModalDelete/ModalDelete";
+import ModalEdit from "../ModalEdit/ModalEdit";
 import css from "./Contact.module.css";
 import { IoPersonSharp } from "react-icons/io5";
-import { BsFillTelephoneFill } from "react-icons/bs";
-import { BsTrashFill } from "react-icons/bs";
+import {
+  BsFillTelephoneFill,
+  BsFillPencilFill,
+  BsTrashFill,
+} from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { deleteContact } from "../../redux/contacts/operations";
-
-Modal.setAppElement("#root");
+import { updateContact } from "../../redux/auth/operations";
 
 export default function Contact({ name, number, id }) {
   const dispatch = useDispatch();
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [editModalIsOpen, setEditModalIsOpen] = useState(false);
+  const [updatedName, setUpdatedName] = useState(name);
+  const [updatedNumber, setUpdatedNumber] = useState(number);
 
-  const openModal = () => setModalIsOpen(true);
-  const closeModal = () => setModalIsOpen(false);
+  const openDeleteModal = () => setModalIsOpen(true);
+  const closeDeleteModal = () => setModalIsOpen(false);
+
+  const openEditModal = () => setEditModalIsOpen(true);
+  const closeEditModal = () => setEditModalIsOpen(false);
 
   const handleDelete = () => {
     dispatch(deleteContact(id));
-    closeModal();
+    closeDeleteModal();
+  };
+
+  const handleUpdate = () => {
+    dispatch(updateContact({ id, name: updatedName, number: updatedNumber }));
+    closeEditModal();
   };
 
   return (
@@ -31,28 +45,28 @@ export default function Contact({ name, number, id }) {
           <BsFillTelephoneFill /> {number}
         </p>
       </div>
-
-      <button className={css.contactBtn} onClick={openModal}>
-        <BsTrashFill />
-      </button>
-
-      <Modal
+      <div className={css.btnContainer}>
+        <button className={css.contactBtnAdd} onClick={openEditModal}>
+          <BsFillPencilFill />
+        </button>
+        <button className={css.contactBtnDel} onClick={openDeleteModal}>
+          <BsTrashFill />
+        </button>
+      </div>
+      <ModalDelete
         isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        contentLabel="Confirm Delete"
-        className={css.modal}
-        overlayClassName={css.overlay}
-      >
-        <h3>Are you sure you want to delete this contact?</h3>
-        <div className={css.btnContainer}>
-          <button onClick={handleDelete} className={css.confirmBtn}>
-            Yes, delete
-          </button>
-          <button onClick={closeModal} className={css.cancelBtn}>
-            Cancel
-          </button>
-        </div>
-      </Modal>
+        onRequestClose={closeDeleteModal}
+        onDelete={handleDelete}
+      />
+      <ModalEdit
+        isOpen={editModalIsOpen}
+        onRequestClose={closeEditModal}
+        updatedName={updatedName}
+        setUpdatedName={setUpdatedName}
+        updatedNumber={updatedNumber}
+        setUpdatedNumber={setUpdatedNumber}
+        onUpdate={handleUpdate}
+      />
     </li>
   );
 }
