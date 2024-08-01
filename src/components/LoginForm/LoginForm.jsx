@@ -1,11 +1,10 @@
 import { Field, Formik, Form } from "formik";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import css from "./LoginForm.module.css";
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { logIn } from "../../redux/auth/operations";
-import { selectIsLoggedIn } from "../../redux/auth/selectors";
-import { fetchContacts } from "../../redux/contacts/operations";
+
 export default function LoginForm() {
   const dispatch = useDispatch();
 
@@ -19,14 +18,6 @@ export default function LoginForm() {
     dispatch(logIn(values));
     actions.resetForm();
   };
-
-  const isLoggedIn = useSelector(selectIsLoggedIn);
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      dispatch(fetchContacts());
-    }
-  }, [isLoggedIn, dispatch]);
 
   return (
     <div>

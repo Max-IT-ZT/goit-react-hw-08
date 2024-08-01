@@ -1,64 +1,63 @@
-// import { FaAddressBook } from "react-icons/fa";
-// import ContactList from "../ContactList/ContactList";
-// import SearchBox from "../SearchBox/SearchBox";
-// import ContactForm from "../ContactForm/ContactForm";
-// import css from "./App.module.css";
-// import { TbError404 } from "react-icons/tb";
-// import { useDispatch, useSelector } from "react-redux";
-// import { useEffect } from "react";
-// import Loader from "../Loader/Loader";
-// import { selectorError, selectorLoading } from "../../redux/contacts/selectors";
-// import { fetchContacts } from "../../redux/contacts/operations";
-
 import { Route, Routes } from "react-router-dom";
-import HomePage from "../../pages/HomePage/HomePage";
-import RegistrationPage from "../../pages/RegistrationPage/RegistrationPage";
-import LoginPage from "../../pages/LoginPage/LoginPage";
-import ContactsPage from "../../pages/ContactsPage/ContactsPage";
 import Layout from "../Layout/Layout";
+import { useDispatch, useSelector } from "react-redux";
+import { lazy, Suspense, useEffect } from "react";
+import { refreshUser } from "../../redux/auth/operations";
+import { selectIsRefreshing } from "../../redux/auth/selectors";
+import RestrictedRoute from "./RestrictedRoute";
+import PrivateRoute from "./PrivateRoute";
+
+const HomePage = lazy(() => import("../../pages/HomePage/HomePage"));
+const RegistrationPage = lazy(() =>
+  import("../../pages/RegistrationPage/RegistrationPage")
+);
+const LoginPage = lazy(() => import("../../pages/LoginPage/LoginPage"));
+const ContactsPage = lazy(() =>
+  import("../../pages/ContactsPage/ContactsPage")
+);
 
 export default function App() {
-  // const dispatch = useDispatch();
-  // const loading = useSelector(selectorLoading);
-  // const error = useSelector(selectorError);
-  // useEffect(() => {
-  //   dispatch(fetchContacts());
-  // }, [dispatch]);
+  const isRefreshing = useSelector(selectIsRefreshing);
+  const dispatch = useDispatch();
 
-  return (
-    <div>
+  useEffect(() => {
+    dispatch(refreshUser());
+  }, [dispatch]);
+
+  return isRefreshing ? (
+    <div>Wait...</div>
+  ) : (
+    <>
       <Layout />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegistrationPage />} />
-        <Route path="/contacts" element={<ContactsPage />} />
-        {/* <Route path="*" element={<NotFoundPage />} /> */}
-      </Routes>
-    </div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route
+            path="/login"
+            element={
+              <RestrictedRoute
+                component={<LoginPage />}
+                redirectTo={"/contacts"}
+              />
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <RestrictedRoute
+                component={<RegistrationPage />}
+                redirectTo={"/contacts"}
+              />
+            }
+          />
+          <Route
+            path="/contacts"
+            element={
+              <PrivateRoute component={<ContactsPage />} redirectTo={"/"} />
+            }
+          />
+        </Routes>
+      </Suspense>
+    </>
   );
 }
-
-//  (
-//     <div className={css.container}>
-//       <h1 className={css.title}>
-//         Phonebook <FaAddressBook />
-//       </h1>
-//       {error ? (
-//         <>
-//           <TbError404 size={150} />
-//           <p className={css.textError}>
-//             Sorry, but there were problems loading the page, try reloading the
-//             page or check your internet connection
-//           </p>
-//         </>
-//       ) : (
-//         <>
-//           <ContactForm />
-//           <SearchBox />
-//           {loading && <Loader />}
-//           <ContactList />
-//         </>
-//       )}
-//     </div>
-//   );

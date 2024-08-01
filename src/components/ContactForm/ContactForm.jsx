@@ -62,7 +62,7 @@ export default function ContactForm() {
           </label>
           <Field
             className={css.field}
-            type="text"
+            type="tel"
             name="number"
             id={numberId}
             placeholder="Enter phone number"

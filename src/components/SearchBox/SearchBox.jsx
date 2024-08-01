@@ -1,27 +1,37 @@
 import { useDispatch, useSelector } from "react-redux";
 import css from "./SearchBox.module.css";
-import { changeFilter } from "../../redux/filters/slice";
-import { selectNameFilter } from "../../redux/filters/selectors";
-
+import { changeFilterByValue } from "../../redux/filters/slice";
+import { selectFilterValue } from "../../redux/filters/selectors";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
 export default function SearchBox() {
   const dispatch = useDispatch();
-  const value = useSelector(selectNameFilter);
+  const filterValue = useSelector(selectFilterValue);
 
-  const onFilter = (e) => {
-    dispatch(changeFilter(e.target.value));
+  const onFilterChange = (e) => {
+    dispatch(changeFilterByValue(e.target.value));
   };
 
   return (
-    <div className={css.searchContainer}>
-      <label htmlFor="search">Find contacts by name</label>
-      <input
-        className={css.input}
-        placeholder="🔎 Search "
-        type="text"
-        name="search"
-        value={value}
-        onChange={onFilter}
-      />
-    </div>
+    <>
+      <Box
+        component="form"
+        sx={{
+          "& .MuiTextField-root": { m: 1, width: "25ch" },
+        }}
+        noValidate
+        autoComplete="off"
+      ></Box>
+
+      <div className={css.searchContainer}>
+        <TextField
+          id="outlined-search"
+          label="Find contacts"
+          type="search"
+          value={filterValue}
+          onChange={onFilterChange}
+        />
+      </div>
+    </>
   );
 }

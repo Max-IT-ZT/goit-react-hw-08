@@ -3,7 +3,7 @@
   gap: 10px;
   min-width: 250px;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   border: 1px solid #ddd;
   padding: 15px;
   border-radius: 8px;
@@ -43,11 +43,11 @@
 .contactBtn {
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 0.5rem 1rem;
+  padding: 5px;
   border-radius: 4px;
   border: none;
-  background-color: #ff0000a0;
+  border-radius: 50%;
+  background-color: #ff000080;
   color: white;
   cursor: pointer;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
@@ -57,4 +57,66 @@
 .contactBtn:focus {
   background-color: #b30000de;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999; /* Ensure it is on top of other content */
+}
+
+.modal {
+  padding: 20px;
+  border-radius: 4px;
+  background: white;
+  max-width: 400px;
+  width: 100%;
+  box-sizing: border-box; /* Include padding in width calculation */
+  position: relative;
+  z-index: 10000; /* Ensure it is on top of the overlay */
+}
+
+.modal h2 {
+  margin-top: 0;
+}
+
+.confirmBtn,
+.cancelBtn {
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+  margin: 5px;
+}
+
+.confirmBtn {
+  background-color: #f44336;
+  color: white;
+}
+
+.cancelBtn {
+  background-color: #e0e0e0;
+  color: black;
+}
+
+.btnContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 600px) {
+  .modal {
+    max-width: 90%;
+    width: auto;
+    padding: 15px;
+  }
 }

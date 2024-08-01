@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import css from "./UserMenu.module.css";
 import { selectUser } from "../../redux/auth/selectors";
-import { refreshUser } from "../../redux/auth/operations";
+import { logout } from "../../redux/auth/operations";
 import { BsPersonCircle } from "react-icons/bs";
 export default function UserMenu() {
   const dispatch = useDispatch();
@@ -12,7 +12,7 @@ export default function UserMenu() {
         {user.name}
         <BsPersonCircle />
       </p>
-      <button className={css.btn} onClick={() => dispatch(refreshUser())}>
+      <button className={css.btn} onClick={() => dispatch(logout())}>
         Logout
       </button>
     </div>
