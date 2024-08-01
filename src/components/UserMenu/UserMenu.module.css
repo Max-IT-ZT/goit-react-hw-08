@@ -1,0 +1,50 @@
+/* UserMenu.module.css */
+
+.container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  font-size: 1rem;
+  color: #333;
+  margin: 0;
+}
+
+.btn {
+  padding: 2px 5px;
+  font-size: 12px;
+  color: #fff;
+  background-color: #ff00009a;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #ff3700c2;
+}
+
+@media (min-width: 600px) {
+  .container {
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .text {
+    font-size: 1.25rem;
+  }
+
+  .btn {
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
+  }
+}

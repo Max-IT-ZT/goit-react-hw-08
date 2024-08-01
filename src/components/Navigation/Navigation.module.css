@@ -1,0 +1,36 @@
+.link {
+  color: rgba(62, 62, 62, 0.698);
+  font-size: 20px;
+  font-weight: bold;
+}
+.isActive {
+  color: orangered;
+}
+.navContainer {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.logContainer {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+@media (max-width: 425px) {
+  .link {
+    color: rgba(62, 62, 62, 0.698);
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .isActive {
+    color: orangered;
+  }
+
+  .navContainer {
+    gap: 10px;
+  }
+  .logContainer {
+    gap: 10px;
+  }
+}

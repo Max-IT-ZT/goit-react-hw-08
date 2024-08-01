@@ -5,8 +5,7 @@ import { useId } from "react";
 import css from "./ContactForm.module.css";
 import { Formik, Form, Field } from "formik";
 import { useDispatch } from "react-redux";
-
-import { addContact } from "../../redux/contactsOps";
+import { addContact } from "../../redux/contacts/operations";
 
 export default function ContactForm() {
   const nameId = useId();
@@ -43,7 +42,7 @@ export default function ContactForm() {
       onSubmit={handleSubmit}
       validationSchema={FeedbackSchema}
     >
-      <Form className={css.form}>
+      <Form className={css.form} autoComplete="off">
         <span className={css.fieldSpan}>
           <label className={css.fieldLabel} htmlFor={nameId}>
             Username
