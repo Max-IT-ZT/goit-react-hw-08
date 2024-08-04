@@ -1,22 +1,25 @@
 import { NavLink } from "react-router-dom";
-import css from "./AuthNav.module.css";
-import clsx from "clsx";
+// import { Link } from "@mui/material";
+import { styled } from "@mui/material/styles";
+
+const Container = styled("div")(({ theme }) => ({
+  display: "flex",
+  gap: theme.spacing(2),
+}));
+
+const StyledLink = styled(NavLink)(({ theme }) => ({
+  textDecoration: "none",
+  color: theme.palette.text.primary,
+  "&.active": {
+    color: theme.palette.primary.main,
+  },
+}));
 
 export default function AuthNav() {
-  const activeClass = ({ isActive }) => {
-    return clsx(css.link, isActive && css.isActive);
-  };
-
   return (
-    <div className={css.container}>
-      <div className={css.logContainer}>
-        <NavLink to="/register" className={activeClass}>
-          Register
-        </NavLink>
-        <NavLink to="/login" className={activeClass}>
-          Log In
-        </NavLink>
-      </div>
-    </div>
+    <Container>
+      <StyledLink to="/register">Register</StyledLink>
+      <StyledLink to="/login">Log In</StyledLink>
+    </Container>
   );
 }

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import ModalDelete from "../ModalDelete/ModalDelete";
 import ModalEdit from "../ModalEdit/ModalEdit";
-import css from "./Contact.module.css";
 import { IoPersonSharp } from "react-icons/io5";
 import {
   BsFillTelephoneFill,
@@ -11,6 +10,13 @@ import {
 import { useDispatch } from "react-redux";
 import { deleteContact } from "../../redux/contacts/operations";
 import { updateContact } from "../../redux/auth/operations";
+import {
+  IconButton,
+  Typography,
+  Card,
+  CardContent,
+  CardActions,
+} from "@mui/material";
 
 export default function Contact({ name, number, id }) {
   const dispatch = useDispatch();
@@ -36,23 +42,81 @@ export default function Contact({ name, number, id }) {
   };
 
   return (
-    <li className={css.contactItem}>
-      <div className={css.contactText}>
-        <p className={css.contactName}>
-          <IoPersonSharp /> {name}
-        </p>
-        <p className={css.contactNumber}>
-          <BsFillTelephoneFill /> {number}
-        </p>
-      </div>
-      <div className={css.btnContainer}>
-        <button className={css.contactBtnAdd} onClick={openEditModal}>
+    <Card
+      sx={{
+        width: 235,
+        padding: 2,
+        borderRadius: 4,
+        boxShadow: 4,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        overflow: "hidden",
+        position: "relative",
+      }}
+    >
+      <CardContent
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          textAlign: "center",
+          gap: 1,
+        }}
+      >
+        <Typography
+          variant="h6"
+          component="div"
+          sx={{
+            fontWeight: "bold",
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            fontSize: { xs: "18px", sm: "20px" },
+          }}
+        >
+          <IoPersonSharp sx={{ fontSize: { xs: 20, sm: 24 } }} />
+          {name}
+        </Typography>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            fontSize: { xs: "14px", sm: "16px" },
+          }}
+        >
+          <BsFillTelephoneFill sx={{ fontSize: { xs: 16, sm: 20 } }} /> {number}
+        </Typography>
+      </CardContent>
+      <CardActions
+        sx={{
+          position: "absolute",
+          bottom: 8,
+          left: 8,
+          right: 8,
+          display: "flex",
+          justifyContent: "space-between",
+          padding: 0,
+        }}
+      >
+        <IconButton
+          color="primary"
+          onClick={openEditModal}
+          sx={{ fontSize: { xs: 16, sm: 20 } }}
+        >
           <BsFillPencilFill />
-        </button>
-        <button className={css.contactBtnDel} onClick={openDeleteModal}>
+        </IconButton>
+        <IconButton
+          color="error"
+          onClick={openDeleteModal}
+          sx={{ fontSize: { xs: 16, sm: 20 } }}
+        >
           <BsTrashFill />
-        </button>
-      </div>
+        </IconButton>
+      </CardActions>
       <ModalDelete
         isOpen={modalIsOpen}
         onRequestClose={closeDeleteModal}
@@ -67,6 +131,6 @@ export default function Contact({ name, number, id }) {
         setUpdatedNumber={setUpdatedNumber}
         onUpdate={handleUpdate}
       />
-    </li>
+    </Card>
   );
 }
