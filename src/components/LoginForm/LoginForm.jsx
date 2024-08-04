@@ -15,21 +15,33 @@ import {
 import { Visibility, VisibilityOff, Lock, Email } from "@mui/icons-material";
 import { motion } from "framer-motion";
 import { useTheme } from "@emotion/react";
+import Loader from "../../components/Loader/Loader"; // Імпорт лоадера
 
 export default function LoginForm() {
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false); // Додано стан для лоадера
 
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
   };
 
   const handleSubmit = (values, actions) => {
-    dispatch(logIn(values));
-    actions.resetForm();
+    setLoading(true); // Показати лоадер при відправці форми
+    dispatch(logIn(values))
+      .then(() => {
+        actions.resetForm();
+        setLoading(false); // Сховати лоадер після успішної відправки
+      })
+      .catch(() => setLoading(false)); // Сховати лоадер при помилці
   };
+
   const theme = useTheme();
   const headerColor = theme.palette.mode === "dark" ? "#e0e0e0" : "#333333";
+
+  if (loading) {
+    return <Loader />; // Відображення лоадера під час завантаження
+  }
 
   return (
     <Container maxWidth="sm">

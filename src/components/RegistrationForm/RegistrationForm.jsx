@@ -23,6 +23,7 @@ import * as Yup from "yup";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { useTheme } from "@emotion/react";
+import Loader from "../../components/Loader/Loader"; // Імпорт лоадера
 
 const validationSchema = Yup.object({
   name: Yup.string().required("Username is required"),
@@ -40,17 +41,17 @@ const validationSchema = Yup.object({
 export default function RegistrationForm() {
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false); // Додано стан для лоадера
 
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
   };
 
   const handleSubmit = async (values, actions) => {
+    setLoading(true); // Показати лоадер при відправці форми
     try {
-      // Виконуємо реєстрацію
       const resultAction = await dispatch(register(values));
 
-      // Перевіряємо наявність помилок
       if (register.rejected.match(resultAction)) {
         toast.error("Registration failed. Please try again.");
       } else {
@@ -60,9 +61,15 @@ export default function RegistrationForm() {
       toast.error("An unexpected error occurred. Please try again.");
     }
     actions.resetForm();
+    setLoading(false); // Сховати лоадер після завершення
   };
+
   const theme = useTheme();
   const headerColor = theme.palette.mode === "dark" ? "#e0e0e0" : "#333333";
+
+  if (loading) {
+    return <Loader />; // Відображення лоадера під час завантаження
+  }
 
   return (
     <Container maxWidth="sm">
@@ -104,7 +111,7 @@ export default function RegistrationForm() {
                   textShadow: "2px 2px 4px rgba(0,0,0,0.2)",
                 }}
               >
-                <Lock sx={{ mr: 1, fontSize: "2rem" }} /> Register
+                <Person sx={{ mr: 1, fontSize: "2rem" }} /> Register
               </Typography>
             </motion.div>
           </Box>
@@ -122,7 +129,7 @@ export default function RegistrationForm() {
                 <Box mb={2}>
                   <TextField
                     {...getFieldProps("name")}
-                    label="Username"
+                    label="Name"
                     variant="outlined"
                     fullWidth
                     required

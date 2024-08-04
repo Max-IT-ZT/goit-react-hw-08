@@ -1,21 +1,44 @@
-import { ProgressBar } from "react-loader-spinner";
-import css from "./Loader.module.css";
+import React from "react";
+import Box from "@mui/material/Box";
+import LinearProgress from "@mui/material/LinearProgress";
 
-export default function Loader() {
+export default function LinearBuffer() {
+  const [progress, setProgress] = React.useState(0);
+  const [buffer, setBuffer] = React.useState(10);
+
+  const progressRef = React.useRef(() => {});
+  React.useEffect(() => {
+    progressRef.current = () => {
+      if (progress > 100) {
+        setProgress(0);
+        setBuffer(10);
+      } else {
+        const diff = Math.random() * 10;
+        const diff2 = Math.random() * 10;
+        setProgress(progress + diff);
+        setBuffer(progress + diff + diff2);
+      }
+    };
+  });
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      progressRef.current();
+    }, 500);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+
   return (
-    <div className={css.container}>
-      <ProgressBar
-        visible={true}
-        height="80"
-        width="80"
-        color="#4fa94d"
-        barColor="#ffa500"
-        borderColor="#fff"
-        barWidth="50"
-        ariaLabel="progress-bar-loading"
-        wrapperStyle={{}}
-        wrapperClass=""
+    <Box sx={{ width: "100%" }}>
+      <LinearProgress
+        variant="buffer"
+        value={progress}
+        valueBuffer={buffer}
+        sx={{ height: 10 }} // Товщина лінії завантаження
       />
-    </div>
+    </Box>
   );
 }

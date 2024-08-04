@@ -1,12 +1,4 @@
 import { useState } from "react";
-import ModalDelete from "../ModalDelete/ModalDelete";
-import ModalEdit from "../ModalEdit/ModalEdit";
-import { IoPersonSharp } from "react-icons/io5";
-import {
-  BsFillTelephoneFill,
-  BsFillPencilFill,
-  BsTrashFill,
-} from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { deleteContact } from "../../redux/contacts/operations";
 import { updateContact } from "../../redux/auth/operations";
@@ -16,7 +8,20 @@ import {
   Card,
   CardContent,
   CardActions,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  TextField,
+  Box,
 } from "@mui/material";
+import { IoPersonSharp } from "react-icons/io5";
+import {
+  BsFillTelephoneFill,
+  BsFillPencilFill,
+  BsTrashFill,
+} from "react-icons/bs";
 
 export default function Contact({ name, number, id }) {
   const dispatch = useDispatch();
@@ -117,20 +122,73 @@ export default function Contact({ name, number, id }) {
           <BsTrashFill />
         </IconButton>
       </CardActions>
-      <ModalDelete
-        isOpen={modalIsOpen}
-        onRequestClose={closeDeleteModal}
-        onDelete={handleDelete}
-      />
-      <ModalEdit
-        isOpen={editModalIsOpen}
-        onRequestClose={closeEditModal}
-        updatedName={updatedName}
-        setUpdatedName={setUpdatedName}
-        updatedNumber={updatedNumber}
-        setUpdatedNumber={setUpdatedNumber}
-        onUpdate={handleUpdate}
-      />
+
+      {/* Delete Modal */}
+      <Dialog
+        open={modalIsOpen}
+        onClose={closeDeleteModal}
+        aria-labelledby="confirm-delete-title"
+        aria-describedby="confirm-delete-description"
+      >
+        <DialogTitle id="confirm-delete-title">Confirm Delete</DialogTitle>
+        <DialogContent>
+          <Typography id="confirm-delete-description">
+            Are you sure you want to delete this contact?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDelete} color="error">
+            Yes, delete
+          </Button>
+          <Button onClick={closeDeleteModal} color="primary">
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Edit Modal */}
+      <Dialog
+        open={editModalIsOpen}
+        onClose={closeEditModal}
+        aria-labelledby="edit-contact-title"
+        aria-describedby="edit-contact-description"
+      >
+        <DialogTitle id="edit-contact-title">Edit Contact</DialogTitle>
+        <DialogContent>
+          <Box
+            component="form"
+            noValidate
+            autoComplete="off"
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleUpdate();
+            }}
+          >
+            <TextField
+              label="Name"
+              value={updatedName}
+              onChange={(e) => setUpdatedName(e.target.value)}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="Number"
+              value={updatedNumber}
+              onChange={(e) => setUpdatedNumber(e.target.value)}
+              fullWidth
+              margin="normal"
+            />
+            <DialogActions>
+              <Button type="submit" color="primary">
+                Save
+              </Button>
+              <Button onClick={closeEditModal} color="secondary">
+                Cancel
+              </Button>
+            </DialogActions>
+          </Box>
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 }

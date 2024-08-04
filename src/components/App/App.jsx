@@ -54,16 +54,14 @@ export default function App() {
     dispatch(refreshUser());
   }, [dispatch]);
 
-  return isRefreshing ? (
-    <div>
-      <Loader />
-    </div>
-  ) : (
-    <>
-      <ThemeProvider>
-        <AppThemeProvider>
-          <Layout />
-          <Suspense fallback={<div>Loading...</div>}>
+  return (
+    <ThemeProvider>
+      <AppThemeProvider>
+        {isRefreshing ? (
+          <Loader />
+        ) : (
+          <Suspense fallback={<Loader />}>
+            <Layout />
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route
@@ -91,10 +89,10 @@ export default function App() {
                 }
               />
             </Routes>
+            <Toaster />
           </Suspense>
-          <Toaster />
-        </AppThemeProvider>
-      </ThemeProvider>
-    </>
+        )}
+      </AppThemeProvider>
+    </ThemeProvider>
   );
 }
