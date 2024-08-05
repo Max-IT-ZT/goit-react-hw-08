@@ -86,11 +86,15 @@ export default function Contact({ name, number, id }) {
         <Typography
           variant="body2"
           color="text.secondary"
+          component="a"
+          href={`tel:${number}`}
           sx={{
             display: "flex",
             alignItems: "center",
             gap: 1,
             fontSize: { xs: "14px", sm: "16px" },
+            textDecoration: "none",
+            color: "inherit",
           }}
         >
           <BsFillTelephoneFill sx={{ fontSize: { xs: 16, sm: 20 } }} /> {number}

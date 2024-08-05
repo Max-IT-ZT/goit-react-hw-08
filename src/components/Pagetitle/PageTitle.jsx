@@ -5,11 +5,12 @@ import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
-import { GiPhone } from "react-icons/gi";
+import { GiPhone, GiSave, GiPadlock, GiMagnifyingGlass } from "react-icons/gi";
 import { FaUserAlt, FaSignInAlt } from "react-icons/fa";
-import { AiFillPhone } from "react-icons/ai";
+import { AiFillPhone, AiOutlineEdit } from "react-icons/ai";
 import { useSelector } from "react-redux";
 import { selectIsLoggedIn } from "../../redux/auth/selectors";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 const PageContainer = styled(Container)(({ theme }) => ({
   textAlign: "center",
@@ -22,6 +23,7 @@ const PageContainer = styled(Container)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
+  alignItems: "center",
 }));
 
 const HeroSection = styled(Box)(({ theme }) => ({
@@ -34,24 +36,19 @@ const HeroSection = styled(Box)(({ theme }) => ({
   alignItems: "center",
   gap: theme.spacing(2),
   marginBottom: theme.spacing(4),
+  transition: "transform 0.3s ease-in-out",
+  "&:hover": {
+    transform: "scale(1.05)",
+  },
 }));
 
 const ActionButton = styled(Button)(({ theme }) => ({
   margin: theme.spacing(1),
   fontSize: "16px",
   padding: theme.spacing(1, 3),
-}));
-
-const Testimonials = styled(Box)(({ theme }) => ({
-  background: theme.palette.background.paper,
-  borderRadius: theme.shape.borderRadius,
-  boxShadow: theme.shadows[4],
-  padding: theme.spacing(4),
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  gap: theme.spacing(2),
-  marginBottom: theme.spacing(4),
+  "& svg": {
+    marginRight: theme.spacing(1),
+  },
 }));
 
 const FAQ = styled(Box)(({ theme }) => ({
@@ -116,7 +113,12 @@ export default function PageTitle() {
           startIcon={<AiFillPhone />}
           sx={{ mt: 3 }}
         >
-          Contact Us
+          <a
+            href="https://www.linkedin.com/in/maksym-babushko-1049b7273?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            Contact Us
+          </a>
         </Button>
       </HeroSection>
 
@@ -141,52 +143,27 @@ export default function PageTitle() {
           }}
         >
           {[
-            "Save Contacts",
-            "Edit Information",
-            "Quick Search",
-            "Secure Data",
-          ].map((feature) => (
-            <Paper
-              key={feature}
-              sx={{
-                padding: 2,
-                borderRadius: 2,
-                boxShadow: 2,
-                textAlign: "center",
-                width: 200,
-              }}
-            >
-              <Typography variant="h6" gutterBottom>
-                {feature}
-              </Typography>
-            </Paper>
-          ))}
-        </Box>
-      </Box>
-
-      <Testimonials>
-        <Typography variant="h5" component="h2" gutterBottom>
-          Testimonials
-        </Typography>
-        <Box
-          sx={{
-            display: "flex",
-            gap: 3,
-            flexWrap: "wrap",
-            justifyContent: "center",
-          }}
-        >
-          {[
             {
-              name: "John Doe",
-              review:
-                "This phone book app has made managing my contacts so much easier!",
+              icon: <GiSave style={{ fontSize: 30, color: "#007bff" }} />,
+              text: "Save Contacts",
             },
             {
-              name: "Jane Smith",
-              review: "I love how secure and easy to use this application is!",
+              icon: (
+                <AiOutlineEdit style={{ fontSize: 30, color: "#007bff" }} />
+              ),
+              text: "Edit Information",
             },
-          ].map((testimonial, index) => (
+            {
+              icon: (
+                <GiMagnifyingGlass style={{ fontSize: 30, color: "#007bff" }} />
+              ),
+              text: "Quick Search",
+            },
+            {
+              icon: <GiPadlock style={{ fontSize: 30, color: "#007bff" }} />,
+              text: "Secure Data",
+            },
+          ].map((feature, index) => (
             <Paper
               key={index}
               sx={{
@@ -194,18 +171,21 @@ export default function PageTitle() {
                 borderRadius: 2,
                 boxShadow: 2,
                 textAlign: "center",
-                width: 250,
+                width: 200,
+                transition: "transform 0.3s ease-in-out",
+                "&:hover": {
+                  transform: "scale(1.05)",
+                },
               }}
             >
-              <Typography variant="body1" gutterBottom>
-                {testimonial.review}
+              {feature.icon}
+              <Typography variant="h6" gutterBottom>
+                {feature.text}
               </Typography>
-              <Typography variant="subtitle1">{testimonial.name}</Typography>
             </Paper>
           ))}
         </Box>
-      </Testimonials>
-
+      </Box>
       <FAQ>
         <Typography variant="h5" component="h2" gutterBottom>
           Frequently Asked Questions
